@@ -1,0 +1,13 @@
+ultralytics
+torch
+torchvision
+torchaudio
+pillow
+PyYAML
+opencv-python
+
+# NOTE: For NVIDIA GPU support (required for MX450), 
+# install the CUDA-enabled version of PyTorch from:
+# https://pytorch.org/get-started/locally/
+# Example for CUDA 12.1:
+# pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121

@@ -1,0 +1,13 @@
+train: C:/ennesse/softcomputing/train/images
+val: C:/ennesse/softcomputing/valid/images
+test: C:/ennesse/softcomputing/test/images
+
+nc: 4
+names: ['cap', 'paper', 'plastic', 'shell']
+
+roboflow:
+  workspace: hari-oetwc
+  project: indoor-waste-detection
+  version: 5
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/hari-oetwc/indoor-waste-detection/dataset/5
