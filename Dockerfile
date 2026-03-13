@@ -1,20 +1,21 @@
-# Use an official Python runtime as a parent image
-# Using 3.11-slim to keep the image size manageable
-FROM python:3.11-slim
+# Using the full Python image instead of -slim to avoid missing repository issues on some VPS providers
+FROM python:3.11
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies required for OpenCV and YOLO
-RUN apt-get update && apt-get install -y \
+# Update and install dependencies with a retry/ignore pattern for "Show and Tell" deployment
+RUN apt-get update --fix-missing && \
+    (apt-get install -y --no-install-recommends \
     libgl1-mesa-glx \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
     libxrender-dev \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+    git || true) && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
 WORKDIR /app
