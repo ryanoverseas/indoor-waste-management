@@ -1,0 +1,8 @@
+metric,value
+mAP50,0.6124
+mAP50-95,0.3842
+precision,0.6521
+recall,0.6210
+inference_speed_ms,23.9
+fps,41.8
+model_size_mb,6.2

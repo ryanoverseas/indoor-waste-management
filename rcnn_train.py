@@ -87,10 +87,11 @@ def train_rcnn():
     )
     
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn
+        train_dataset, batch_size=1, shuffle=True, collate_fn=collate_fn
     )
 
     # Initialize Model
+    print("Loading pretrained Faster R-CNN weights (this may take a moment)...")
     model = fasterrcnn_resnet50_fpn(pretrained=True)
     num_classes = data_config['nc'] + 1  # classes + background
     in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -102,11 +103,12 @@ def train_rcnn():
     optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
 
     print("--- Starting Faster R-CNN Training ---")
+    print("Note: On MX450, the first batch may take 1-2 minutes to load.")
     num_epochs = 50
     model.train()
     for epoch in range(num_epochs):
         epoch_loss = 0
-        for images, targets in train_loader:
+        for i, (images, targets) in enumerate(train_loader):
             images = list(image.to(device) for image in images)
             targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
@@ -118,6 +120,9 @@ def train_rcnn():
             optimizer.step()
 
             epoch_loss += losses.item()
+            
+            if i % 10 == 0:
+                print(f"Epoch {epoch+1}, Iteration {i}/{len(train_loader)}, Loss: {losses.item():.4f}")
         
         print(f"Epoch {epoch+1}/{num_epochs}, Loss: {epoch_loss/len(train_loader):.4f}")
 

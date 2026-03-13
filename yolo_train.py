@@ -3,7 +3,6 @@ from ultralytics import YOLO
 
 def train_yolo():
     # Load a pretrained YOLOv8 model (n (nano) is fastest/lightest)
-    # The PDF used 'yolov8n.pt'
     model = YOLO('yolov8n.pt')
 
     # Path to the data configuration file
